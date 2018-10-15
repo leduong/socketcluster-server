@@ -152,6 +152,10 @@ describe('Integration tests', function () {
     });
   });
 
+  after('Shut down all clients', function (done) {
+    process.exit();
+  });
+
   describe('Socket authentication', function () {
     it('Should not send back error if JWT is not provided in handshake', function (done) {
       client = socketCluster.connect(clientOptions);
@@ -190,7 +194,7 @@ describe('Integration tests', function () {
       client.once('connect', function (statusA) {
         // Change the setAuthKey to invalidate the current token.
         client.emit('setAuthKey', 'differentAuthKey', function (err) {
-          assert.equal(err == null, true);
+          assert.equal(err === null, true);
 
           client.once('disconnect', function () {
             client.once('connect', function (statusB) {

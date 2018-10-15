@@ -110,16 +110,16 @@ var SCServer = function (options) {
   }
   var WSServer = wsEngine.Server;
 
-  if (opts.authPrivateKey != null || opts.authPublicKey != null) {
-    if (opts.authPrivateKey == null) {
+  if (opts.authPrivateKey !== null || opts.authPublicKey !== null) {
+    if (opts.authPrivateKey === null) {
       throw new InvalidOptionsError('The authPrivateKey option must be specified if authPublicKey is specified');
-    } else if (opts.authPublicKey == null) {
+    } else if (opts.authPublicKey === null) {
       throw new InvalidOptionsError('The authPublicKey option must be specified if authPrivateKey is specified');
     }
     this.signatureKey = opts.authPrivateKey;
     this.verificationKey = opts.authPublicKey;
   } else {
-    if (opts.authKey == null) {
+    if (opts.authKey === null) {
       opts.authKey = crypto.randomBytes(32).toString('hex');
     }
     this.signatureKey = opts.authKey;
@@ -132,9 +132,9 @@ var SCServer = function (options) {
   this.defaultVerificationOptions = {
     async: this.authVerifyAsync
   };
-  if (opts.authVerifyAlgorithms != null) {
+  if (opts.authVerifyAlgorithms !== null) {
     this.defaultVerificationOptions.algorithms = opts.authVerifyAlgorithms;
-  } else if (opts.authAlgorithm != null) {
+  } else if (opts.authAlgorithm !== null) {
     this.defaultVerificationOptions.algorithms = [opts.authAlgorithm];
   }
 
@@ -142,7 +142,7 @@ var SCServer = function (options) {
     expiresIn: opts.authDefaultExpiry,
     async: this.authSignAsync
   };
-  if (opts.authAlgorithm != null) {
+  if (opts.authAlgorithm !== null) {
     this.defaultSignatureOptions.algorithm = opts.authAlgorithm;
   }
 
@@ -172,19 +172,19 @@ var SCServer = function (options) {
   wsServerOptions.server = this.httpServer;
   wsServerOptions.verifyClient = this.verifyHandshake.bind(this);
 
-  if (wsServerOptions.path == null && this._path != null) {
+  if (wsServerOptions.path === null && this._path !== null) {
     wsServerOptions.path = this._path;
   }
-  if (wsServerOptions.perMessageDeflate == null && this.perMessageDeflate != null) {
+  if (wsServerOptions.perMessageDeflate === null && this.perMessageDeflate !== null) {
     wsServerOptions.perMessageDeflate = this.perMessageDeflate;
   }
-  if (wsServerOptions.handleProtocols == null && opts.handleProtocols != null) {
+  if (wsServerOptions.handleProtocols === null && opts.handleProtocols !== null) {
     wsServerOptions.handleProtocols = opts.handleProtocols;
   }
-  if (wsServerOptions.maxPayload == null && opts.maxPayload != null) {
+  if (wsServerOptions.maxPayload === null && opts.maxPayload !== null) {
     wsServerOptions.maxPayload = opts.maxPayload;
   }
-  if (wsServerOptions.clientTracking == null) {
+  if (wsServerOptions.clientTracking === null) {
     wsServerOptions.clientTracking = false;
   }
 
@@ -242,10 +242,10 @@ SCServer.prototype._subscribeSocket = function (socket, channelOptions, callback
     return;
   }
 
-  if (socket.channelSubscriptionsCount == null) {
+  if (socket.channelSubscriptionsCount === null) {
     socket.channelSubscriptionsCount = 0;
   }
-  if (socket.channelSubscriptions[channelName] == null) {
+  if (socket.channelSubscriptions[channelName] === null) {
     socket.channelSubscriptions[channelName] = true;
     socket.channelSubscriptionsCount++;
   }
@@ -284,7 +284,7 @@ SCServer.prototype._unsubscribeSocket = function (socket, channel) {
   }
 
   delete socket.channelSubscriptions[channel];
-  if (socket.channelSubscriptionsCount != null) {
+  if (socket.channelSubscriptionsCount !== null) {
     socket.channelSubscriptionsCount--;
   }
 
@@ -369,7 +369,7 @@ SCServer.prototype._processAuthToken = function (scSocket, signedAuthToken, call
 
       // If the error is related to the JWT being badly formatted, then we will
       // treat the error as a socket error.
-      if (err && signedAuthToken != null) {
+      if (err && signedAuthToken !== null) {
         Emitter.prototype.emit.call(scSocket, 'error', errorData.authError);
         if (errorData.isBadToken) {
           self._emitBadAuthTokenError(scSocket, errorData.authError, signedAuthToken);
@@ -548,7 +548,7 @@ SCServer.prototype._handleSocketConnection = function (wsSocket, upgradeReq) {
         };
 
         if (err) {
-          if (signedAuthToken != null) {
+          if (signedAuthToken !== null) {
             // Because the token is optional as part of the handshake, we don't count
             // it as an error if the token wasn't provided.
             clientSocketStatus.authError = scErrors.dehydrateError(err);
@@ -607,7 +607,7 @@ SCServer.prototype.generateId = function () {
 
 SCServer.prototype.addMiddleware = function (type, middleware) {
   if (!this._middleware[type]) {
-    throw new InvalidArgumentsError(`Middleware type "${type}" is not supported`);
+    throw new InvalidArgumentsError('Middleware type "${type}" is not supported');
     // Read more: https://socketcluster.io/#!/docs/middleware-and-authorization
   }
   this._middleware[type].push(middleware);
@@ -626,7 +626,7 @@ SCServer.prototype.verifyHandshake = function (info, cb) {
 
   var req = info.req;
   var origin = info.origin;
-  if (origin === 'null' || origin == null) {
+  if (origin === 'null' || origin === null) {
     origin = '*';
   }
   var ok = false;
@@ -696,7 +696,7 @@ SCServer.prototype.verifyInboundEvent = function (socket, eventName, eventData, 
 };
 
 SCServer.prototype.isAuthTokenExpired = function (token) {
-  if (token && token.exp != null) {
+  if (token && token.exp !== null) {
     var currentTime = Date.now();
     var expiryMilliseconds = token.exp * 1000;
     return currentTime > expiryMilliseconds;
@@ -713,7 +713,7 @@ SCServer.prototype._passThroughMiddleware = function (options, cb) {
     socket: options.socket
   };
 
-  if (options.authTokenExpiredError != null) {
+  if (options.authTokenExpiredError !== null) {
     request.authTokenExpiredError = options.authTokenExpiredError;
   }
 
@@ -877,7 +877,7 @@ SCServer.prototype._passThroughHandshakeSCMiddleware = function (options, cb) {
           statusCode = 4008;
         }
         if (err) {
-          if (err.statusCode != null) {
+          if (err.statusCode !== null) {
             statusCode = err.statusCode;
           }
           if (err === true || err.silent) {

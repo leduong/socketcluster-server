@@ -58,7 +58,7 @@ module.exports.listen = function (port, options, fn) {
  */
 
 module.exports.attach = function (server, options) {
-  if (options == null) {
+  if (options === null) {
     options = {};
   }
   options.httpServer = server;

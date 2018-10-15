@@ -141,10 +141,10 @@ SCServerSocket.prototype._sendPing = function () {
 
 SCServerSocket.prototype._handleEventObject = function (obj, message) {
   var self = this;
-  if (obj && obj.event != null) {
+  if (obj && obj.event !== null) {
     var eventName = obj.event;
 
-    if (self._localEvents[eventName] == null) {
+    if (self._localEvents[eventName] === null) {
       var response = new Response(self, obj.cid);
       self.server.verifyInboundEvent(self, eventName, obj.data, function (err, newEventData, ackData) {
         if (err) {
@@ -168,7 +168,7 @@ SCServerSocket.prototype._handleEventObject = function (obj, message) {
         }
       });
     }
-  } else if (obj && obj.rid != null) {
+  } else if (obj && obj.rid !== null) {
     // If incoming message is a response to a previously sent message
     var ret = self._callbackMap[obj.rid];
     if (ret) {
@@ -315,7 +315,7 @@ SCServerSocket.prototype.sendObjectBatch = function (object) {
       } catch (err) {
         Emitter.prototype.emit.call(self, 'error', err);
       }
-      if (str != null) {
+      if (str !== null) {
         self.send(str);
       }
       self._batchSendList = [];
@@ -330,7 +330,7 @@ SCServerSocket.prototype.sendObjectSingle = function (object) {
   } catch (err) {
     Emitter.prototype.emit.call(this, 'error', err);
   }
-  if (str != null) {
+  if (str !== null) {
     this.send(str);
   }
 };
@@ -346,7 +346,7 @@ SCServerSocket.prototype.sendObject = function (object, options) {
 SCServerSocket.prototype.emit = function (event, data, callback, options) {
   var self = this;
 
-  if (this._localEvents[event] == null) {
+  if (this._localEvents[event] === null) {
     this.server.verifyOutboundEvent(this, event, data, options, function (err, newData) {
       var eventObject = {
         event: event
@@ -372,7 +372,7 @@ SCServerSocket.prototype.emit = function (event, data, callback, options) {
 
           self._callbackMap[eventObject.cid] = {callback: callback, timeout: timeout};
         }
-        if (options && options.useCache && options.stringifiedData != null) {
+        if (options && options.useCache && options.stringifiedData !== null) {
           // Optimized
           self.send(options.stringifiedData);
         } else {
@@ -409,11 +409,11 @@ SCServerSocket.prototype.setAuthToken = function (data, options, callback) {
   var oldState = this.authState;
   this.authState = this.AUTHENTICATED;
 
-  if (options == null) {
+  if (options === null) {
     options = {};
   } else {
     options = cloneDeep(options);
-    if (options.algorithm != null) {
+    if (options.algorithm !== null) {
       delete options.algorithm;
       var err = new InvalidArgumentsError('Cannot change auth token algorithm at runtime - It must be specified as a config option on launch');
       Emitter.prototype.emit.call(this, 'error', err);
@@ -427,13 +427,13 @@ SCServerSocket.prototype.setAuthToken = function (data, options, callback) {
   // We cannot have the exp claim on the token and the expiresIn option
   // set at the same time or else auth.signToken will throw an error.
   var expiresIn;
-  if (options.expiresIn == null) {
+  if (options.expiresIn === null) {
     expiresIn = defaultSignatureOptions.expiresIn;
   } else {
     expiresIn = options.expiresIn;
   }
   if (authToken) {
-    if (authToken.exp == null) {
+    if (authToken.exp === null) {
       options.expiresIn = expiresIn;
     } else {
       delete options.expiresIn;
@@ -443,11 +443,11 @@ SCServerSocket.prototype.setAuthToken = function (data, options, callback) {
   }
 
   // Always use the default sync/async signing mode since it cannot be changed at runtime.
-  if (defaultSignatureOptions.async != null) {
+  if (defaultSignatureOptions.async !== null) {
     options.async = defaultSignatureOptions.async;
   }
   // Always use the default algorithm since it cannot be changed at runtime.
-  if (defaultSignatureOptions.algorithm != null) {
+  if (defaultSignatureOptions.algorithm !== null) {
     options.algorithm = defaultSignatureOptions.algorithm;
   }
 
@@ -504,7 +504,7 @@ SCServerSocket.prototype.deauthenticate = function (callback) {
 SCServerSocket.prototype.kickOut = function (channel, message, callback) {
   var self = this;
 
-  if (channel == null) {
+  if (channel === null) {
     Object.keys(this.channelSubscriptions).forEach(function (channelName) {
       delete self.channelSubscriptions[channelName];
       self.channelSubscriptionsCount--;

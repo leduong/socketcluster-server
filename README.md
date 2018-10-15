@@ -1,3 +1,15 @@
+
+[![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://npmjs.org/package/socketcluster-server)
+[![NPM version](http://img.shields.io/npm/v/socketcluster-server.svg?style=flat)](https://npmjs.org/package/socketcluster-server)
+[![NPM version](http://img.shields.io/npm/dm/socketcluster-server.svg?style=flat)](https://npmjs.org/package/socketcluster-server)
+[![Build Status](http://img.shields.io/travis/leduong/socketcluster-server.svg?style=flat)](http://travis-ci.org/leduong/socketcluster-server)
+[![Coverage Status](https://coveralls.io/repos/leduong/socketcluster-server/badge.svg?branch=master&service=github)](https://coveralls.io/github/leduong/socketcluster-server?branch=master)
+[![dependencies Status](https://david-dm.org/leduong/socketcluster-server/status.svg)](https://david-dm.org/leduong/socketcluster-server)
+[![devDependencies Status](https://david-dm.org/leduong/socketcluster-server/dev-status.svg)](https://david-dm.org/leduong/socketcluster-server?type=dev)
+
+[![NPM](https://nodei.co/npm/socketcluster-server.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/socketcluster-server/)
+
+
 # socketcluster-server
 Minimal server module for SocketCluster
 
